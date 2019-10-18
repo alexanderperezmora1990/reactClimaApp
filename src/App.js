@@ -1,17 +1,15 @@
-import React from 'react';
-import WeatherLocation from './components/weatherLocation'
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import WeatherLocation from './components/WeatherLocation';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+class App extends Component {
+  render() {
+    return (
+      <div className="App">
         <WeatherLocation></WeatherLocation>
-      </header>
-    </div>
-  );
+      </div>
+    );
+  }
 }
 
 export default App;
