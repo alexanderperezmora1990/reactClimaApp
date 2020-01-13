@@ -1,22 +1,12 @@
 import React, { Component } from 'react';
 import Location from './Location';
 import WeatherData from './WeatherData';
-import {
-    SUN,
-    windy
-} from '../../constants/weathers';
+import updateData from '../../services/weather-service'
 import { urlLocation } from '../../constants/api'
 import convert from 'convert-units'
 import './style.css'
 
-const data = {
-    temperature : 5,
-    weatherState : SUN,
-    humidity : 10,
-    wind : "10 m/s"
-}
-
-
+const data = null;
 
 
 
@@ -30,24 +20,15 @@ class WeatherLocation extends Component {
         }
     }
 
-
-    getWeatherState = (weatherData) => {
-        return windy
+    
+    componentDidMount() {
+        this.theClick();
     }
 
-    updateData = (weatherData) => {
-        let {temp, humidity} =  weatherData.main;
-        let { speed } = weatherData.wind
-        this.getTemperature = temp;
-        data.temperature = temp;
-        const newData = {
-            temperature : temp,
-            weatherState :  this.getWeatherState(),
-            humidity : humidity,
-            wind : `${speed} m/s`
-        }
-        return newData;
+    componentDidUpdate(prevProps, prevState) {
+        console.log('componentDidUpdate');
     }
+
 
     theClick = () => {
         fetch(urlLocation).then(resolve => {
@@ -56,7 +37,7 @@ class WeatherLocation extends Component {
             let {name} = resolve;
             this.setState({
                 city: name,
-                data: this.updateData(resolve)
+                data: updateData(resolve)
             });
         });
     }
@@ -82,7 +63,10 @@ class WeatherLocation extends Component {
         return (
             <div>
                 <Location city={city}></Location>
-                <WeatherData data={data}></WeatherData>
+                { 
+                    data ? <WeatherData data={data}></WeatherData> :
+                    'Cargando data...'
+                }
                 <button onClick={() => this.theClick()}>Realizar</button>
                 <select className="drop-box" onChange={this.changeType}>
                     <option value="f">°F</option>
